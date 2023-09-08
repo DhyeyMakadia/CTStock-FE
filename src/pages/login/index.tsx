@@ -42,11 +42,6 @@ import { Formik, FormikValues } from 'formik'
 import { AuthService } from 'src/services/auth'
 import { isAuthenticated } from 'src/utils/helperFunctions'
 
-interface State {
-  password: string
-  showPassword: boolean
-}
-
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
@@ -67,22 +62,12 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 
 const LoginPage = () => {
   // ** State
-  const [values, setValues] = useState<State>({
-    password: '',
-    showPassword: false
-  })
+
+  const [showPassword, setShowPassword] = useState<boolean>(false)
 
   // ** Hook
   const theme = useTheme()
   const router = useRouter()
-
-  const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
 
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -90,18 +75,19 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      router.push("/")
+      router.push('/')
     }
   }, [])
-  
 
   const Login = async (values: FormikValues) => {
-    console.log('values', values)
     try {
-      const res = await AuthService.Login(values)
+      const payload = {
+        email: values.email,
+        password: values.password
+      }
+      const res = await AuthService.Login(payload)
       localStorage.setItem('authToken', res.data.token)
-      router.push("/")
-      console.log('res', res.data)
+      router.push('/')
     } catch (error) {
       console.log('err', error)
     }
@@ -219,16 +205,16 @@ const LoginPage = () => {
                     id='auth-login-password'
                     name='password'
                     onChange={handleChange}
-                    // type={values.showPassword ? 'text' : 'password'}
+                    type={showPassword ? 'text' : 'password'}
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
                           edge='end'
-                          onClick={handleClickShowPassword}
+                          onClick={() => setShowPassword(!showPassword)}
                           onMouseDown={handleMouseDownPassword}
                           aria-label='toggle password visibility'
                         >
-                          s{/* {values.showPassword ? <EyeOutline /> : <EyeOffOutline />} */}
+                          {showPassword ? <EyeOutline /> : <EyeOffOutline />}
                         </IconButton>
                       </InputAdornment>
                     }

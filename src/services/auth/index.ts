@@ -1,4 +1,4 @@
-import request from "../api";
+import request from "../publicClient";
 
 export const AuthService = {
   Login: (payload: any) => {

@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react'
-import second from './'
-import { Grid } from '@material-ui/core'
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 import MUIDataTable from 'mui-datatables'
 import { isAuthenticated, signOut } from 'src/utils/helperFunctions'
 import { useRouter } from 'next/router'
 import { CommonService } from 'src/services/common'
 
-const Dashboard = () => {
+const AfterOrderStocks = () => {
   const [data, setData] = useState([])
   const router = useRouter()
+
   useEffect(() => {
     if (!isAuthenticated()) {
       router.push('/login')
@@ -18,14 +16,16 @@ const Dashboard = () => {
 
   const columns = [
     {
+      // Done
       name: 'product',
       label: 'product',
       options: {
         filter: true,
-        sort: true
+        sort: false
       }
     },
     {
+      // Done
       name: 'brand',
       label: 'brand',
       options: {
@@ -34,6 +34,7 @@ const Dashboard = () => {
       }
     },
     {
+      // Done
       name: 'size',
       label: 'size',
       options: {
@@ -42,6 +43,7 @@ const Dashboard = () => {
       }
     },
     {
+      // Done
       name: 'category',
       label: 'category',
       options: {
@@ -49,15 +51,16 @@ const Dashboard = () => {
         sort: false
       }
     },
+    // {
+    //   name: 'location',
+    //   label: 'location',
+    //   options: {
+    //     filter: true,
+    //     sort: false
+    //   }
+    // },
     {
-      name: 'location',
-      label: 'location',
-      options: {
-        filter: true,
-        sort: false
-      }
-    },
-    {
+      // Done
       name: 'mark',
       label: 'mark',
       options: {
@@ -66,6 +69,7 @@ const Dashboard = () => {
       }
     },
     {
+      // Done
       name: 'prm',
       label: 'prm',
       options: {
@@ -74,6 +78,7 @@ const Dashboard = () => {
       }
     },
     {
+      // Done
       name: 'com',
       label: 'com',
       options: {
@@ -82,6 +87,7 @@ const Dashboard = () => {
       }
     },
     {
+      // Done
       name: 'rej',
       label: 'rej',
       options: {
@@ -90,6 +96,7 @@ const Dashboard = () => {
       }
     },
     {
+      // Done
       name: 'total',
       label: 'total',
       options: {
@@ -98,6 +105,7 @@ const Dashboard = () => {
       }
     },
     {
+      // Done
       name: 'oneTime',
       label: 'oneTime',
       options: {
@@ -106,6 +114,7 @@ const Dashboard = () => {
       }
     },
     {
+      // Done
       name: 'designName',
       label: 'designName',
       options: {
@@ -113,51 +122,60 @@ const Dashboard = () => {
         sort: false
       }
     },
+    // {
+    //   name: 'batchShade',
+    //   label: 'batchShade',
+    //   options: {
+    //     filter: true,
+    //     sort: false
+    //   }
+    // },
+    // {
+    //   name: 'mfgStatus',
+    //   label: 'mfgStatus',
+    //   options: {
+    //     filter: true,
+    //     sort: false
+    //   }
+    // },
+    // {
+    //   name: 'boxPack',
+    //   label: 'boxPack',
+    //   options: {
+    //     filter: true,
+    //     sort: false
+    //   }
+    // },
     {
-      name: 'batchShade',
-      label: 'batchShade',
-      options: {
-        filter: true,
-        sort: false
-      }
-    },
-    {
-      name: 'mfgStatus',
-      label: 'mfgStatus',
-      options: {
-        filter: true,
-        sort: false
-      }
-    },
-    {
-      name: 'boxPack',
-      label: 'boxPack',
-      options: {
-        filter: true,
-        sort: false
-      }
-    },
-    {
-      name: 'useCont',
-      label: 'useCont',
-      options: {
-        filter: true,
-        sort: false
-      }
-    },
-    {
-      name: 'baseDesignName',
-      label: 'baseDesignName',
+      // Done
+      name: 'packFor',
+      label: 'packFor',
       options: {
         filter: true,
         sort: false
       }
     }
+    // {
+    //   name: 'useCont',
+    //   label: 'useCont',
+    //   options: {
+    //     filter: true,
+    //     sort: false
+    //   }
+    // },
+    // {
+    //   name: 'baseDesignName',
+    //   label: 'baseDesignName',
+    //   options: {
+    //     filter: true,
+    //     sort: false
+    //   }
+    // }
   ]
 
   useEffect(() => {
     if (isAuthenticated()) {
-      CommonService.GetClassifiedStocks()
+      CommonService.GetPackBoxtocks()
         .then(response => {
           console.log('res', response)
           const responseData = response
@@ -174,7 +192,7 @@ const Dashboard = () => {
     <>
       <MUIDataTable
         key={data.length}
-        title='Classified Stocks'
+        title='Pack Box Stocks'
         columns={columns}
         data={data}
         options={{ filterType: 'checkbox' }}
@@ -183,4 +201,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default AfterOrderStocks

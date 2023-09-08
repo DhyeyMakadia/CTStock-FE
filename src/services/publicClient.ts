@@ -3,7 +3,7 @@ import { StatusCode } from "src/utils/constants";
 
 const https = require("https");
 
-const request = axios.create({
+const publicClient = axios.create({
   baseURL: process.env.API_URL,
   timeout: 12400000,
   responseType: "json",
@@ -14,7 +14,7 @@ let requests: string[] = [];
 let conflictRequest: string = "";
 
 // Request interceptors Customize based on your need
-request.interceptors.request.use(
+publicClient.interceptors.request.use(
   async (config) => {
     console.log("=======================================================",process.env.API_URL)
     if (config.headers) {
@@ -28,9 +28,9 @@ request.interceptors.request.use(
 
     // if (config.headers && config.params && config.params.requiredToken) {
       // Add X-Access-Token header to every request, you can add other custom headers here
-      const authToken = localStorage.getItem("authToken");
+      // const authToken = localStorage.getItem("authToken");
 
-      config.headers["Authorization"] = "Bearer " + authToken;
+      // config.headers["Authorization"] = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaHlleUBnbWFpbC5jb20iLCJpYXQiOjE2OTQxODI2MDgsImV4cCI6MTY5NDE4NDA0OH0.JcpWt0vIaEaKtss8LREHU9_SzvO_VI5U0qB-V25def0" ;
     // }
 
     return config;
@@ -42,7 +42,7 @@ request.interceptors.request.use(
 );
 
 // Response interceptors Customize based on your need
-request.interceptors.response.use(
+publicClient.interceptors.response.use(
   (response: AxiosResponse) => {
     const { data } = response;
     removeRequest(response?.config?.url as string);
@@ -99,4 +99,4 @@ function removeRequest(req: string) {
   }
 }
 
-export default request;
+export default publicClient;
